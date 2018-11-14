@@ -1,3 +1,4 @@
+// To try out just copy the code into a c# instance on coderpad.io/sandbox environment -- Happy Decrypting!
 using System;
 using System.Security.Cryptography;
 using System.IO;
