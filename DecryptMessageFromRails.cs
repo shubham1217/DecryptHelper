@@ -18,7 +18,7 @@ class DecryptMessageFromRails
     
     static void Main(string[] args)
     {
-        string example_token = "WWZzY0VlOWVvVTNhejQxbjFqcFFzQT09LS1ZMWJWM1pSTjh6bWd3cmlrV1BnUmtnPT0=--8664219154c0b842e95a06224cd7e229e8d0c9e8";
+        string example_token = "OG15VnJRM3YwMHd1RzlUT1hzZUNqdz09LS0vZG5YQmV1VUNsYkx1Y0NDNWRaaW5BPT0=--697eeb6aa082ab042d7bceacfa6314dcd5248efa";
         string example_secret = "3cd327ee31b70a184f56ef4e43ca4e9abf9d067d358ef573273a3e895b748864";
         
         string decryptedToken =  ExtractCipherDataAndDecrypt(example_token, example_secret);
@@ -50,9 +50,8 @@ class DecryptMessageFromRails
     // If the value generated doesnt match then the attack has occured
     // Raise exception in such a case
     public static void EnsureNoPaddingAttackOccured(string encryptedData, string digest, string key) {
-        // Generate HMAC SHA1 digest using secret - note the full key is used here unlike the aes algorithm where only the 32
-        // bytes are used.
-        HMACSHA1 hmac = new HMACSHA1(Encoding.ASCII.GetBytes(key));
+        // Generate HMAC SHA1 digest using secret - we are not only using the 32 bytes unlike the full key before.
+        HMACSHA1 hmac = new HMACSHA1(Encoding.ASCII.GetBytes(key).Take(keySize).ToArray());
         hmac.Initialize();
         byte[] buffer = Encoding.ASCII.GetBytes(encryptedData);
         string generatedDigest = BitConverter.ToString(hmac.ComputeHash(buffer)).Replace("-", "").ToLower();
